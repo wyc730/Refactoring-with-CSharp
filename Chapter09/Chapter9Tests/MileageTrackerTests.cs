@@ -6,66 +6,66 @@ namespace Chapter9Tests;
 public class MileageTrackerTests {
     [Fact]
     public void NewAccountShouldHaveStartingBalance() {
-        // Arrange
-        int expectedMiles = 100;
+        // Arrange - 初始化測試環境
+        int expectedMiles = 100; // 預期的起始里程數
 
-        // Act
-        MileageTracker tracker = new();
+        // Act - 執行測試動作
+        MileageTracker tracker = new(); // 創建一個新的里程追蹤器實例
 
-        // Assert
-        tracker.Balance.ShouldBe(expectedMiles);
+        // Assert - 驗證結果
+        tracker.Balance.ShouldBe(expectedMiles); // 斷言追蹤器的餘額應該等於預期的起始里程數
     }
 
     [Fact]
     public void AddMileageShouldIncreaseBalance() {
-        // Arrange
-        MileageTracker tracker = new();
+        // Arrange - 初始化測試環境
+        MileageTracker tracker = new(); // 創建一個新的里程追蹤器實例
 
-        // Act
-        tracker.AddMiles(50);
+        // Act - 執行測試動作
+        tracker.AddMiles(50); // 向追蹤器添加 50 里程
 
-        // Assert
-        tracker.Balance.ShouldBe(150);
+        // Assert - 驗證結果
+        tracker.Balance.ShouldBe(150); // 斷言追蹤器的餘額應該增加到 150
     }
 
     [Fact]
     public void RemoveMileageShouldDecreaseBalance() {
-        // Arrange
-        MileageTracker tracker = new();
-        tracker.AddMiles(900);
+        // Arrange - 初始化測試環境
+        MileageTracker tracker = new(); // 創建一個新的里程追蹤器實例
+        tracker.AddMiles(900); // 先向追蹤器添加 900 里程
 
-        // Act
-        tracker.RedeemMiles(250);
+        // Act - 執行測試動作
+        tracker.RedeemMiles(250); // 使用 250 里程
 
-        // Assert
-        tracker.Balance.ShouldBe(750);
+        // Assert - 驗證結果
+        tracker.Balance.ShouldBe(750); // 斷言追蹤器的餘額應該減少到 750
     }
 
     [Fact]
     public void RemoveMileageShouldPreventNegativeBalance() {
-        // Arrange
-        MileageTracker tracker = new();
-        int startingBalance = tracker.Balance;
+        // Arrange - 初始化測試環境
+        MileageTracker tracker = new(); // 創建一個新的里程追蹤器實例
+        int startingBalance = tracker.Balance; // 獲取起始餘額
 
-        // Act
-        tracker.RedeemMiles(2500);
+        // Act - 執行測試動作
+        tracker.RedeemMiles(2500); // 嘗試使用 2500 里程，超過起始餘額
 
-        // Assert
-        tracker.Balance.ShouldBe(startingBalance);
+        // Assert - 驗證結果
+        tracker.Balance.ShouldBe(startingBalance); // 斷言追蹤器的餘額應該保持不變，因為不允許負餘額
     }
 
     [Theory]
-    [InlineData(900, 250, 750)]
-    [InlineData(0, 2500, 100)]
+    [InlineData(900, 250, 750)] // 測試添加 900 里程後使用 250 里程的情況
+    [InlineData(0, 2500, 100)] // 測試在起始餘額下嘗試使用 2500 里程的情況
     public void RemoveMileageShouldResultInCorrectBalance(int addAmount, int redeemAmount, int expectedBalance) {
-        // Arrange
-        MileageTracker tracker = new();
-        tracker.AddMiles(addAmount);
+        // Arrange - 初始化測試環境
+        MileageTracker tracker = new(); // 創建一個新的里程追蹤器實例
+        tracker.AddMiles(addAmount); // 向追蹤器添加指定的里程數
 
-        // Act
-        tracker.RedeemMiles(redeemAmount);
+        // Act - 執行測試動作
+        tracker.RedeemMiles(redeemAmount); // 使用指定的里程數
 
-        // Assert
-        tracker.Balance.ShouldBe(expectedBalance);
+        // Assert - 驗證結果
+        tracker.Balance.ShouldBe(expectedBalance); // 斷言追蹤器的餘額應該等於預期的餘額
     }
 }

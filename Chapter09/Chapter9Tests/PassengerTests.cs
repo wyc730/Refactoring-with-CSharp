@@ -11,25 +11,26 @@ using System.Threading.Tasks;
 namespace Chapter9Tests; 
 
 public class PassengerTests {
-
+    // 測試乘客的全名是否正確
     [Fact]
     public void PassengerFullNameShouldBeAccurate() {
-        // Arrange
+        // Arrange - 初始化測試環境
         Passenger passenger = new() {
             FirstName = "Dot",
             LastName = "Nette",
         };
 
-        // Act
+        // Act - 執行測試動作
         string name = passenger.FullName;
 
-        // Assert
-        name.ShouldBe("Dot Nette");
+        // Assert - 驗證結果
+        name.ShouldBe("Dot Nette"); // 斷言全名應為 "Dot Nette"
     }
 
+    // 測試登機信息是否正確
     [Fact]
     public void BoardingMessageShouldBeAccurate() {
-        // Arrange
+        // Arrange - 初始化測試環境
         Passenger passenger = new() {
             BoardingGroup = 7,
             FirstName = "Dot",
@@ -46,33 +47,35 @@ public class PassengerTests {
         };
         BoardingProcessor boarding = new(BoardingStatus.Boarding, group:3);
 
-        // Act
+        // Act - 執行測試動作
         string message = boarding.BuildMessage(passenger);
 
-        // Assert
-        message.ShouldBe("Please Wait");
+        // Assert - 驗證結果
+        message.ShouldBe("Please Wait"); // 斷言登機信息應為 "Please Wait"
     }
 
+    // 使用 Bogus 生成乘客資料，並測試登機信息是否正確
     [Fact]
     public void BoardingMessageShouldBeAccurateWithBogus() {
-        Faker<Passenger> faker = BuildPersonFaker();
+        Faker<Passenger> faker = BuildPersonFaker(); // 使用 Bogus 建立乘客資料生成器
 
-        Passenger passenger = faker.Generate();
+        Passenger passenger = faker.Generate(); // 生成一個乘客資料
         passenger.BoardingGroup = 7;
         passenger.NeedsHelp = false;
         passenger.IsMilitary = false;
 
         BoardingProcessor boarding = new(BoardingStatus.Boarding, group: 3);
 
-        // Act
+        // Act - 執行測試動作
         string message = boarding.BuildMessage(passenger);
 
-        // Assert
-        message.ShouldBe("Please Wait");
+        // Assert - 驗證結果
+        message.ShouldBe("Please Wait"); // 斷言登機信息應為 "Please Wait"
     }
 
+    // 建立一個用於生成乘客資料的 Bogus Faker
     private static Faker<Passenger> BuildPersonFaker() {
-        // Arrange
+        // Arrange - 初始化測試環境
         Faker<Passenger> faker = new();
         faker.RuleFor(p => p.FirstName, f => f.Person.FirstName)
              .RuleFor(p => p.LastName, f => f.Person.LastName)
@@ -86,3 +89,4 @@ public class PassengerTests {
         return faker;
     }
 }
+
